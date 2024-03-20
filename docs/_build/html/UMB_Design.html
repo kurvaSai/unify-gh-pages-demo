@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unify Matter Bridge(UMB) Design &mdash; sphinx-demo-unify 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="_static/custom_styles.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2709fde1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Introduction" href="readme_chip_tool_testing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #3b82f6" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            sphinx-demo-unify
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme_building_x86_64.html">Building the Unify Matter Bridge for Debian Bullseye (Or similar Ubuntu) x86_64</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme_building.html">Building the Unify Matter Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme_overview.html">Unify Matter Bridge Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme_user.html">Unify Matter Bridge User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme_chip_tool_testing.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Unify Matter Bridge(UMB) Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#component-overview">Component Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#node-monitoring">Node Monitoring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bridged-device-basic-information-cluster">Bridged Device Basic Information Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cluster-specific-attribute-access-interfaces">Cluster specific Attribute Access Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cluster-specific-command-handler-interfaces">Cluster specific Command Handler Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#group-command-handling">Group Command Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#unify-node-inclusion-and-mapping">Unify Node Inclusion and Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cluster-command-handling">Cluster Command Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#attribute-access">Attribute Access</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#attribute-read">Attribute Read</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attribute-write">Attribute Write</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #3b82f6" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sphinx-demo-unify</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Unify Matter Bridge(UMB) Design</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/UMB_Design.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="unify-matter-bridge-umb-design">
+<h1>Unify Matter Bridge(UMB) Design<a class="headerlink" href="#unify-matter-bridge-umb-design" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#component-overview">Component Overview</a></p></li>
+<li><p><a class="reference internal" href="#unify-node-inclusion-and-mapping">Bridged Node Inclusion and Mapping</a></p></li>
+<li><p><a class="reference internal" href="#cluster-command-handling">Command Handling</a></p></li>
+<li><p><a class="reference internal" href="#attribute-access">Attribute Access</a></p></li>
+</ul>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The purpose of the Unify Matter Bridge is to make nodes from legacy protocols available on a matter fabric, in such a way that they can be operated and monitored through the matter fabric. The system level design consisting of the Unify Matter Bridge and a number of Unify Protocol Controllers is as shown in figure below.
+<img alt="SystemDiagram" src="_images/UnifyMatterSystem.png" /></p>
+<p>For detailed overview, refer <a class="reference internal" href="readme_overview.html"><span class="std std-doc">readme_overview</span></a>. This document focuses on the design of UMB.</p>
+</section>
+<section id="component-overview">
+<h2>Component Overview<a class="headerlink" href="#component-overview" title="Link to this heading"></a></h2>
+<p><img alt="Software Components" src="_images/software_architecture.png" /></p>
+<section id="node-monitoring">
+<h3>Node Monitoring<a class="headerlink" href="#node-monitoring" title="Link to this heading"></a></h3>
+<p>Node Monitoring consists of below components and is responsible for keeping track of nodes included in the Unify gateway and mapping them bridged enpoints. Detailed process in <a class="reference internal" href="#unify-node-inclusion-and-mapping">Node Inclusion Section</a></p>
+<ul class="simple">
+<li><p><strong>Unify Node State Monitor</strong>  :  <br>
+This tracks the publish messages on State topic for the nodes in Unify network and updates, and triggers events to Matter Node State Monitor when</p>
+<ul>
+<li><p>New Node is added</p></li>
+<li><p>Existing Node is removed</p></li>
+<li><p>Existing Node’s state changes</p></li>
+</ul>
+</li>
+<li><p><strong>Device Type Translator</strong>    : <br>
+This component helps determines the matter device type for the node being added based on the clusters it supports. It also provides below translations:</p>
+<ul>
+<li><p>Unify Cluster Name -&gt; CHIP Cluster ID</p></li>
+<li><p>Unify cluster and attribute name -&gt; CHIP Attribute ID</p></li>
+<li><p>Unify cluster and command name -&gt; CHIP Command ID</p></li>
+<li><p>CHIP cluster name -&gt; CHIP Cluster ID</p></li>
+<li><p>CHIP cluster and attribute name -&gt; CHIP Attribute ID</p></li>
+<li><p>CHIP cluster and command name -&gt; CHIP Command ID</p></li>
+</ul>
+</li>
+<li><p><strong>Matter App Interface</strong>      : <br>
+This provides with utilies and wrapper interface to Matter stack to register a legacy node and its capabilities as dynamic endpoint</p></li>
+<li><p><strong>Matter Node State Monitor</strong> : <br>
+This is the binding component which acts on events from unify node state monitor, converts it and matter bridged endpoint with help of device type tanslator and matter app interface. It is also responsible for maintaining the mappings between matter endpoint ID and its corresponding UNID and EPIDs.</p></li>
+</ul>
+</section>
+<section id="bridged-device-basic-information-cluster">
+<h3>Bridged Device Basic Information Cluster<a class="headerlink" href="#bridged-device-basic-information-cluster" title="Link to this heading"></a></h3>
+<p><strong>Basic Bridged Cluster Atrribute Interface</strong>: <br>
+The Unify Matter Bridge must fill in the Bridged Device Information cluster to the greatest extent possible, most fields can be derived directly from the UCL Basic Cluster. The Unify Name and Location cluster will ensure that we can map the NodeLabel in a sensible way.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Note:</span> <span class="pre">When</span> <span class="pre">the</span> <span class="pre">functionality</span> <span class="pre">of</span> <span class="pre">a</span> <span class="pre">Bridged</span> <span class="pre">Device</span> <span class="pre">is</span> <span class="pre">represented</span> <span class="pre">using</span> <span class="pre">a</span> <span class="pre">set</span> <span class="pre">of</span> <span class="pre">Endpoints,</span> <span class="pre">this</span> <span class="pre">cluster</span> <span class="pre">SHALL</span> <span class="pre">only</span> <span class="pre">be</span> <span class="pre">exposed</span> <span class="pre">on</span> <span class="pre">the</span> <span class="pre">Endpoint</span> <span class="pre">which</span> <span class="pre">is</span> <span class="pre">at</span> <span class="pre">the</span> <span class="pre">top</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">hierarchy</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">functionality</span> <span class="pre">of</span> <span class="pre">that</span> <span class="pre">Bridged</span> <span class="pre">Device.</span></code></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>BDBI Attribute</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Unify Topic</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VendorName</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/ManufacturerName/Reported</p></td>
+</tr>
+<tr class="row-odd"><td><p>VendorID</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/ApplicationVersion/Reported</p></td>
+</tr>
+<tr class="row-even"><td><p>ProductName</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/ModelIdentifier/Reported</p></td>
+</tr>
+<tr class="row-odd"><td><p>NodeLabel</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/NameAndLocation/Attributes/Name</p></td>
+</tr>
+<tr class="row-even"><td><p>HardwareVersion</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/HWVersion/Reported</p></td>
+</tr>
+<tr class="row-odd"><td><p>HardwareVersionString</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/HWVersion/Reported <br> ucl/by-unid/+/ep0/Basic/Attributes/ModelIdentifier/Reported</p></td>
+</tr>
+<tr class="row-even"><td><p>SoftwareVersion</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/ApplicationVersion/Reported</p></td>
+</tr>
+<tr class="row-odd"><td><p>SoftwareVersionString</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/ApplicationVersion/Reported <br> ucl/by-unid/+/ep0/Basic/Attributes/SWBuildID/Reported</p></td>
+</tr>
+<tr class="row-even"><td><p>ManufacturingDate</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/DateCode/Reported</p></td>
+</tr>
+<tr class="row-odd"><td><p>PartNumber</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/ProductCode/Reported</p></td>
+</tr>
+<tr class="row-even"><td><p>ProductURL</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/ProductURL/Reported</p></td>
+</tr>
+<tr class="row-odd"><td><p>ProductLabel</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/ProductLabel/Reported</p></td>
+</tr>
+<tr class="row-even"><td><p>SerialNumber</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/SerialNumber/Reported</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reachable</p></td>
+<td><p>M</p></td>
+<td><p>ucl/by-unid/+/State</p></td>
+</tr>
+<tr class="row-even"><td><p>UniqueID</p></td>
+<td><p>O</p></td>
+<td><p>ucl/by-unid/+/ep0/Basic/Attributes/ApplicationVersion/Reported</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cluster-specific-attribute-access-interfaces">
+<h3>Cluster specific Attribute Access Interfaces<a class="headerlink" href="#cluster-specific-attribute-access-interfaces" title="Link to this heading"></a></h3>
+<p>The controller may perform read and write operations on individual attribute of any cluster on any bridged endpoint. The matter bridge must implement translators that convert the write operation to corresponding WriteAttribute Unify MQTT message. It shall also parse and store ReportedValue(s) of all attributes from unsolicited publish messages from Protocol Controllers when there is update on attribute. The stored values shall be refered to while responding to Read operation on that resource. These translators and parser interfaces shall be zap generated to the greatest extent possible. <br>
+The translators will be fairly simple, as both the Unfiy data model and the Matter data model are both based on Zigbee Cluster Library. However, there are still some discrepancies. In order to bridge these gaps, some cluster attributes may need to be emulated to best extent possible by matter bridge.</p>
+<p>More details in <a class="reference internal" href="#attribute-access">Attribute Access</a> section below.</p>
+</section>
+<section id="cluster-specific-command-handler-interfaces">
+<h3>Cluster specific Command Handler Interfaces<a class="headerlink" href="#cluster-specific-command-handler-interfaces" title="Link to this heading"></a></h3>
+<p>The commands invoked by controller will also need translation to Unify MQTT topic space. For this purpose, matter bridge must implement command mappers/translator which translates the matter command received from matter interface into relevant MQTT topic space and payload of Unify data model. These mappers/translators shall also be zap generated to the greatest extent possible.</p>
+<p>More details in <a class="reference internal" href="#cluster-command-handling">Command Handling</a> section below.</p>
+</section>
+<section id="group-command-handling">
+<h3>Group Command Handling<a class="headerlink" href="#group-command-handling" title="Link to this heading"></a></h3>
+<p>The Matter Bridge endpoints may become part of a group. The matter bridge must create/remove Unify groups corresponding to the matter groups. The bridge should have an internal group table with (&lt;matter_group_id&gt;, &lt;unify_group_ids&gt;) tuples. The group table must be updated when groups are added or removed on the matter fabric. When a group message is received on the matter fabric, this command must be translated and propagated to the corresponding Unify Group.</p>
+<p><strong>Group Communication</strong> <br>
+Matter multi-cast group is managed using 16-bits Group ID and tracked via Group Key Management Cluster. The Unify Matter Bridge shall register to receive on associated IPv6 multicast address, and the matter IPv6 multicast port for each group they are a member. Group Key Management Cluster manages group keys and maintains a list of groups supported via a node. Each group entry includes a membership list of zero of more endpoints that are members of the group on the node. Modification of this membership list is done via the Groups cluster, which is scoped to an endpoint. The Groups cluster is scoped to the endpoint. Groups cluster commands support discovering the endpoint membership in a group, adding the endpoint to a group, removing the endpoint from a group, removing endpoint membership from all groups. All commands defined in this cluster SHALL only affect groups scoped to the accessing fabric. The Unify matter bridge shall have a component that manages Group IDs via caching the list of endpoints.
+When it receives a group command it shall translate the commands to an MQTT group cluster hierarchy publication to notify the respected Protocol controller.</p>
+</section>
+</section>
+<section id="unify-node-inclusion-and-mapping">
+<h2>Unify Node Inclusion and Mapping<a class="headerlink" href="#unify-node-inclusion-and-mapping" title="Link to this heading"></a></h2>
+<p><img alt="Unify Node Inclusion" src="_images/commissioning_flow.png" /></p>
+<p>When a new node’s state topic is published by protocol controller, the Unify node state monitor component shall read the network capabilities and ultimately relay to matter node monitor that a new node has been added along with the description/capabilities read during node interview. The Unify capabilities/description are then translated to a preliminary matter description. Further any mandatory or necessary cluster, if it can be emulated, is added into description. A list of device types are then derived by the device type mapper based on the description, forming a full description for the Unify node as matter endpoint, which is then registered as a dynamic endpoint into matter stack.</p>
+</section>
+<section id="cluster-command-handling">
+<h2>Cluster Command Handling<a class="headerlink" href="#cluster-command-handling" title="Link to this heading"></a></h2>
+<p><img alt="Command Handling" src="_images/receiving_matter_command.png" /></p>
+<p>Each cluster’s command handler shall register itself to matter stack as command handler. When a command is received matter stack will invoke the registered command handler to process the command. The command handler shall implement an InvokeCommand method which processes the command specific to the cluster. The command handler shall check if the received command is actually supported by device and can be handled by it or if its supported though emulation and direct the command to either the emulator implementation or towards Unify node. The emulator implementation may be completely emulated in which just a custom action is executed or it may also additionally translate and send a UCL MQTT message. When there is no emulation the command is directly translated to UCL topic and the command parameters to the JSON body of the UCL MQTT message.</p>
+</section>
+<section id="attribute-access">
+<h2>Attribute Access<a class="headerlink" href="#attribute-access" title="Link to this heading"></a></h2>
+<p><img alt="Attribute Access" src="_images/attribute_access.png" /></p>
+<section id="attribute-read">
+<h3>Attribute Read<a class="headerlink" href="#attribute-read" title="Link to this heading"></a></h3>
+<p>The matter bridge shall subscribe to all the topic spaces specific to the clusters supported. The matter bridge gets the reported value published and translates the UCL topic and its payload to the corresponding mapped enpoint, cluster’s attribute and its value. The translated value is stored it in cache which is later refered to when there is a Read from matter fabric.</p>
+<p>Each attribute translator shall register itself to matter stack as Attribute access override. When there is a Read request from matter fabric, matter stack will invoke the registered override to fetch the attribute value. The attribute translator shall implement <code class="docutils literal notranslate"><span class="pre">Read</span></code> method to process the Read request. The <code class="docutils literal notranslate"><span class="pre">Read</span></code> in each translator shall check if the attribute being read is an emulated attribute and redirect the request to emulator. When not emulated the attribute value should be available in the cache which fetched and returned after encoding it in expected format.</p>
+</section>
+<section id="attribute-write">
+<h3>Attribute Write<a class="headerlink" href="#attribute-write" title="Link to this heading"></a></h3>
+<p>Each attribute translator shall register itself to matter stack as Attribute access override. When there is a Write request from matter fabric, matter stack will invoke the registered override to write the attribute value. The attribute translator shall implement <code class="docutils literal notranslate"><span class="pre">Write</span></code> method to process the Write request. The <code class="docutils literal notranslate"><span class="pre">Write</span></code> in each translator shall check if the attribute being written is a emulated attribute and redirect the request to emulator. When not emulated the attribute write is converted to corresponding WriteAttributes UCL topic and value is converted to JSON body of the UCL MQTT message and published to broker. The emulator may just perform some custom action limited to matter bridge or it may additionally perform a custom translation and publish to broker if needed.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="readme_chip_tool_testing.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ShekarKurv.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-XXXXXXXXXX', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
